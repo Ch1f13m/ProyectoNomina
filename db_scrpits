@@ -1,12 +1,19 @@
-from db import get_connection
+import pyodbc
 
-try:
-    conn = get_connection()
-    print("Conexión exitosa a SQL Server")
-    cursor = conn.cursor()
-    cursor.execute("SELECT GETDATE();")
-    row = cursor.fetchone()
-    print("🕓 Fecha y hora del servidor SQL:", row[0])
-    conn.close()
-except Exception as e:
-    print("Error en la conexión:", e)
+def get_connection():
+    server = '192.168.1.16'
+    database = 'Nomina'
+    username = 'Andres'
+    password = '12345'
+
+    conn_str = (
+        f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+        f"SERVER={server};"
+        f"DATABASE={database};"
+        f"UID={username};"
+        f"PWD={password};"
+        f"TrustServerCertificate=yes;"
+    )
+
+    conn = pyodbc.connect(conn_str)
+    return conn
