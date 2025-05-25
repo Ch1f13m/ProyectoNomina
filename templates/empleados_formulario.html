@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Empleado</title>
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        header {
+            background-color: #007acc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .btn-submit {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #218838;
+        }
+        .btn-volver {
+        display: inline-block;
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        margin-top: 30px;
+        font-size: 15px;
+        text-align: center;
+        }
+
+        .btn-volver:hover {
+        background-color: #5a6268;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Registrar Nuevo Empleado</h1>
+</header>
+
+<div class="container">
+    <form method="POST" action="{{ url_for('empleados.crear_empleado') }}">
+        <label for="tipo_documento">Tipo de Documento</label>
+        <select name="tipo_documento" required>
+            <option value="CC">Cédula</option>
+            <option value="TI">Tarjeta de Identidad</option>
+            <option value="CE">Cédula Extranjería</option>
+            <option value="PAS">Pasaporte</option>
+        </select>
+
+        <label for="numero_documento">Número de Documento</label>
+        <input type="text" name="numero_documento" required>
+
+        <label for="primer_nombre">Primer Nombre</label>
+        <input type="text" name="primer_nombre" required>
+
+        <label for="segundo_nombre">Segundo Nombre</label>
+        <input type="text" name="segundo_nombre">
+
+        <label for="primer_apellido">Primer Apellido</label>
+        <input type="text" name="primer_apellido" required>
+
+        <label for="segundo_apellido">Segundo Apellido</label>
+        <input type="text" name="segundo_apellido">
+
+        <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+        <input type="date" name="fecha_nacimiento" required>
+
+        <label for="direccion">Dirección</label>
+        <input type="text" name="direccion">
+
+        <label for="telefono">Teléfono</label>
+        <input type="text" name="telefono">
+
+        <label for="email">Email</label>
+        <input type="email" name="email">
+
+        <label for="estado_civil">Estado Civil</label>
+        <select name="estado_civil">
+            <option value="Soltero">Soltero</option>
+            <option value="Casado">Casado</option>
+            <option value="Unión Libre">Unión Libre</option>
+            <option value="Separado">Separado</option>
+            <option value="Viudo">Viudo</option>
+        </select>
+
+        <label for="fecha_ingreso">Fecha de Ingreso</label>
+        <input type="date" name="fecha_ingreso" required>
+
+        <label for="salario_actual">Salario Actual</label>
+        <input type="number" name="salario_actual" step="0.01" required>
+
+        <label>
+            <input type="checkbox" name="auxilio_transporte_aplica">
+            Aplica auxilio de transporte
+        </label>
+          
+
+        <button type="submit" class="btn-submit">Guardar Empleado</button>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn-volver">⬅ Volver al Panel</a>
+
+    </form>
+</div>
+</body>
+</html>

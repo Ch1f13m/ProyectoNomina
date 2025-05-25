@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Liquidación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+        h2 {
+            color: #007acc;
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            background: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #007acc;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .btn-volver {
+            display: inline-block;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+        .btn-volver:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Detalle de Liquidación</h1>
+
+    <h2>Contrato y Empleado</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Contrato ID</th>
+                <th>Empleado</th>
+                <th>Salario</th>
+                <th>Cargo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in detalle.contrato_empleado %}
+            <tr>
+                <td>{{ row.contrato_id }}</td>
+                <td>{{ row.primer_nombre }} {{ row.primer_apellido }}</td>
+                <td>${{ "{:,.2f}".format(row.salario_actual) }}</td>
+                <td>{{ row.cargo }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Prestaciones Sociales</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Valor</th>
+                <th>Periodo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in detalle.prestaciones %}
+            <tr>
+                <td>{{ p.tipo_prestacion }}</td>
+                <td>${{ "{:,.2f}".format(p.valor_prestacion) }}</td>
+                <td>{{ p.periodo_aplicacion }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Aportes Seguridad Social</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Empleado</th>
+                <th>Empleador</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in detalle.aportes %}
+            <tr>
+                <td>{{ a.tipo_aporte }}</td>
+                <td>${{ "{:,.2f}".format(a.valor_empleado) }}</td>
+                <td>${{ "{:,.2f}".format(a.valor_empleador) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Parafiscales</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pf in detalle.parafiscales %}
+            <tr>
+                <td>{{ pf.tipo_parafiscal }}</td>
+                <td>${{ "{:,.2f}".format(pf.valor) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Retención en la Fuente</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Concepto</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in detalle.retencion %}
+            <tr>
+                <td>{{ r.concepto }}</td>
+                <td>${{ "{:,.2f}".format(r.valor) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('admin_dashboard') }}" class="btn-volver">⬅ Volver al Panel</a>
+</body>
+</html>

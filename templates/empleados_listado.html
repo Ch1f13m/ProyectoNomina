@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Empleados</title>
+    <style>
+        .filtro-form {
+    background: #e9f5fc;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.filtro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    align-items: end;
+}
+
+.campo label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.campo input, .campo select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.campo-boton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-filtrar {
+    background-color: #007acc;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-filtrar:hover {
+    background-color: #005f99;
+}
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
+
+        header {
+            background-color: #007acc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .btn-agregar {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        th, td {
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007acc;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .btn-volver {
+        display: inline-block;
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        margin-top: 30px;
+        font-size: 15px;
+        text-align: center;
+        }
+
+        .btn-volver:hover {
+        background-color: #5a6268;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestión de Empleados</h1>
+    </header>
+
+    <div class="container">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn-volver">⬅ Volver al Panel</a>
+        <a href="{{ url_for('empleados.crear_empleado') }}" class="btn-agregar">+ Nuevo Empleado</a>
+        <table>
+            <h2>Filtrar Empleados</h2>
+
+<form method="GET" class="filtro-form">
+    <div class="filtro-grid">
+        <div class="campo">
+            <label>Nombre o Apellido:</label>
+            <input type="text" name="nombre" placeholder="Ej: Andrés" value="{{ request.args.get('nombre', '') }}">
+        </div>
+
+        <div class="campo">
+            <label>Tipo Documento:</label>
+            <select name="tipo_documento">
+                <option value="">-- Todos --</option>
+                <option value="CC" {% if request.args.get('tipo_documento') == 'CC' %}selected{% endif %}>Cédula</option>
+                <option value="TI" {% if request.args.get('tipo_documento') == 'TI' %}selected{% endif %}>T. Identidad</option>
+                <option value="CE" {% if request.args.get('tipo_documento') == 'CE' %}selected{% endif %}>C. Extranjería</option>
+                <option value="PAS" {% if request.args.get('tipo_documento') == 'PAS' %}selected{% endif %}>Pasaporte</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label>Estado Civil:</label>
+            <select name="estado_civil">
+                <option value="">-- Todos --</option>
+                <option value="Soltero" {% if request.args.get('estado_civil') == 'Soltero' %}selected{% endif %}>Soltero</option>
+                <option value="Casado" {% if request.args.get('estado_civil') == 'Casado' %}selected{% endif %}>Casado</option>
+                <option value="Unión Libre" {% if request.args.get('estado_civil') == 'Unión Libre' %}selected{% endif %}>Unión Libre</option>
+                <option value="Separado" {% if request.args.get('estado_civil') == 'Separado' %}selected{% endif %}>Separado</option>
+                <option value="Viudo" {% if request.args.get('estado_civil') == 'Viudo' %}selected{% endif %}>Viudo</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label>Ingreso Desde:</label>
+            <input type="date" name="fecha_inicio" value="{{ request.args.get('fecha_inicio', '') }}">
+        </div>
+
+        <div class="campo">
+            <label>Ingreso Hasta:</label>
+            <input type="date" name="fecha_fin" value="{{ request.args.get('fecha_fin', '') }}">
+        </div>
+
+        <div class="campo-boton">
+            <button type="submit" class="btn-filtrar"> Filtrar</button>
+        </div>
+    </div>
+</form>
+            
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Documento</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Estado Civil</th>
+                    <th>Fecha Ingreso</th>
+                    <th>Salario</th>
+                    <th>Novedad</th> 
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in empleados %}
+                <tr>
+                    <td>{{ emp.empleado_id }}</td>
+                    <td>{{ emp.tipo_documento }} {{ emp.numero_documento }}</td>
+                    <td>{{ emp.primer_nombre }} {{ emp.segundo_nombre }}</td>
+                    <td>{{ emp.primer_apellido }} {{ emp.segundo_apellido }}</td>
+                    <td>{{ emp.telefono }}</td>
+                    <td>{{ emp.email }}</td>
+                    <td>{{ emp.estado_civil }}</td>
+                    <td>{{ emp.fecha_ingreso }}</td>
+                    <td>${{ "{:,.2f}".format(emp.salario_actual) }}</td>
+                    <td>
+                        <a href="{{ url_for('novedades.crear_novedad', empleado_id=emp.empleado_id) }}"
+                           style="background-color: #007bff; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none;">
+                           Añadir
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Contratos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #007acc;
+            text-align: center;
+        }
+
+        .top-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .top-bar a {
+            background-color: #00aaff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .top-bar a:hover {
+            background-color: #007acc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007acc;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f0f8ff;
+        }
+
+        .btn-nomina {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-nomina:hover {
+            background-color: #218838;
+        }
+
+        .success-message {
+            color: green;
+            font-weight: bold;
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Contratos de la Empresa</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div style="margin: 20px auto; max-width: 800px;">
+      {% for category, message in messages %}
+        <div class="{{ 'success-message' if category == 'success' else 'error-message' }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div class="top-bar">
+    <a href="{{ url_for('contratos.crear_contrato') }}">Nuevo Contrato</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID Contrato</th>
+            <th>Empleado</th>
+            <th>Tipo</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Cargo</th>
+            <th>Salario</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contrato in contratos %}
+        <tr>
+            <td>{{ contrato.contrato_id }}</td>
+            <td>{{ contrato.empleado_id }}</td>
+            <td>{{ contrato.tipo_contrato }}</td>
+            <td>{{ contrato.fecha_inicio }}</td>
+            <td>{{ contrato.fecha_fin or '---' }}</td>
+            <td>{{ contrato.cargo }}</td>
+            <td>${{ "%.2f"|format(contrato.salario_contrato) }}</td>
+            <td>{{ contrato.estado_contrato }}</td>
+            <td>
+                <a href="{{ url_for('liquidacion_nomina.generar_nomina', contrato_id=contrato.contrato_id) }}" class="btn-nomina">
+                    Generar Nómina
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

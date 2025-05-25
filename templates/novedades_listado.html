@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Novedades Laborales</title>
+    <style>
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
+
+        header {
+            background-color: #007acc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        form label {
+            font-weight: bold;
+        }
+
+        form input, form select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            border-bottom: 1px solid #ccc;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007acc;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn-filtrar {
+            background-color: #007acc;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 22px;
+        }
+
+        .btn-volver {
+            display: inline-block;
+            margin-top: 30px;
+            background-color: #007acc;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .btn-volver:hover {
+            background-color: #005f99;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Historial de Novedades Laborales</h1>
+</header>
+
+<div class="container">
+    <h2>Buscar / Filtrar Novedades</h2>
+
+    <form method="GET">
+        <div>
+            <label for="nombre">Nombre:</label><br>
+            <input type="text" name="nombre" value="{{ request.args.get('nombre', '') }}">
+        </div>
+
+        <div>
+            <label for="tipo">Tipo de Novedad:</label><br>
+            <select name="tipo">
+                <option value="">-- Todas --</option>
+                <option value="Vacaciones" {% if request.args.get('tipo') == 'Vacaciones' %}selected{% endif %}>Vacaciones</option>
+                <option value="Incapacidad" {% if request.args.get('tipo') == 'Incapacidad' %}selected{% endif %}>Incapacidad</option>
+                <option value="Licencia" {% if request.args.get('tipo') == 'Licencia' %}selected{% endif %}>Licencia</option>
+                <option value="Permiso" {% if request.args.get('tipo') == 'Permiso' %}selected{% endif %}>Permiso</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="fecha_inicio">Desde:</label><br>
+            <input type="date" name="fecha_inicio" value="{{ request.args.get('fecha_inicio', '') }}">
+        </div>
+
+        <div>
+            <label for="fecha_fin">Hasta:</label><br>
+            <input type="date" name="fecha_fin" value="{{ request.args.get('fecha_fin', '') }}">
+        </div>
+
+        <div>
+            <button type="submit" class="btn-filtrar">Filtrar</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Empleado</th>
+                <th>Tipo</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Días</th>
+                <th>Valor Pagado</th>
+                <th>Acciones</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for nov in novedades %}
+            <tr>
+                <td>{{ nov.novedad_id }}</td>
+                <td>{{ nov.primer_nombre }} {{ nov.primer_apellido }}</td>
+                <td>{{ nov.tipo_novedad }}</td>
+                <td>{{ nov.fecha_inicio }}</td>
+                <td>{{ nov.fecha_fin }}</td>
+                <td>{{ (nov.fecha_fin - nov.fecha_inicio).days + 1 }}</td>
+            <td>
+            {% if nov.valor_pagado_novedad %}
+            ${{ "{:,.2f}".format(nov.valor_pagado_novedad) }}
+            {% else %}
+            No Aplica
+            {% endif %}
+            </td>
+           <td>
+    <a href="{{ url_for('novedades.editar_novedad', novedad_id=nov.novedad_id) }}"
+       style="background-color:#28a745; color:white; padding:6px 10px; border-radius:6px; text-decoration:none;">
+       Editar
+    </a>
+    <form action="{{ url_for('novedades.eliminar_novedad', novedad_id=nov.novedad_id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de eliminar esta novedad?');">
+        <button type="submit" style="background-color:#dc3545; color:white; border:none; padding:6px 10px; border-radius:6px;">
+            Eliminar
+        </button>
+    </form>
+</td>
+</tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="text-align: center;">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn-volver">← Volver al Panel</a>
+    </div>
+</div>
+
+</body>
+</html>

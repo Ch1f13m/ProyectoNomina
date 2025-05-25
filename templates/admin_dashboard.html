@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración - Nómina Colombia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #007acc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            margin: 40px auto;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .section-title {
+            margin-top: 60px;
+            color: #007acc;
+            font-size: 22px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .button-grid a {
+            display: block;
+            background-color: #00aaff;
+            color: white;
+            padding: 20px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-grid a:hover {
+            background-color: #0077cc;
+        }
+
+        .logout-btn {
+            margin-top: 40px;
+            background-color: #ff4c4c;
+            padding: 15px 30px;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #cc0000;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bienvenido {{ empresa_nombre }}</h1>
+        <a href="{{ url_for('mi_cuenta') }}">👤 Mi cuenta</a>
+    </header>
+
+    <div class="container">
+        <h2>Módulos de Nómina</h2>
+
+        <div class="button-grid">
+          <a href="{{ url_for('liquidacion_nomina.detalle_liquidacion') }}"> Detalle General de Liquidación</a>
+
+
+        </div>
+
+        <h2 class="section-title">Gestión de Recursos Humanos</h2>
+
+        <div class="button-grid">
+            <a href="{{ url_for('empleados.listar_empleados') }}">Gestión de Empleados</a>
+            <a href="{{ url_for('contratos.listar_contratos') }}">Gestión de Contratos</a>
+            <a href="{{ url_for('novedades.listar_novedades') }}">Historial de Novedades Laborales</a>
+            <a href="{{ url_for('liquidacion_nomina.listar_nominas') }}"> Ver Nóminas Generadas</a>
+            
+        </div>
+
+        <form action="{{ url_for('logout') }}" method="get">
+            <button type="submit" class="logout-btn">Cerrar Sesión</button>
+        </form>
+    </div>
+
+</body>
+</html>

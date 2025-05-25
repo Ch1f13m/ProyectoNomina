@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Nueva Nómina - Nómina Colombia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #007acc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            margin: 40px auto;
+            max-width: 600px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .btn-submit {
+            margin-top: 30px;
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #218838;
+        }
+
+        .btn-back {
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+            color: #007acc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Agregar Nueva Nómina</h1>
+    </header>
+
+    <div class="container">
+        <h2>Datos de la Nómina</h2>
+
+        <form action="{{ url_for('liquidacion_nomina.crear_nomina') }}" method="POST">
+            
+            <label for="contrato_id">ID del Contrato</label>
+            <input type="text" id="contrato_id" name="contrato_id" required>
+
+            <label for="periodo_nomina">Periodo de Nómina (AAAA-MM)</label>
+            <input type="text" id="periodo_nomina" name="periodo_nomina" placeholder="Ej: 2025-05" required>
+
+            <label for="fecha_pago">Fecha de Pago</label>
+            <input type="date" id="fecha_pago" name="fecha_pago" required>
+
+            <label for="salario_devengado">Salario Devengado</label>
+            <input type="number" id="salario_devengado" name="salario_devengado" step="0.01" required>
+
+            <label for="auxilio_transporte">Auxilio de Transporte</label>
+            <input type="number" id="auxilio_transporte" name="auxilio_transporte" step="0.01">
+
+            <label for="otros_ingresos">Otros Ingresos</label>
+            <input type="number" id="otros_ingresos" name="otros_ingresos" step="0.01">
+
+            <label for="total_deducciones">Total Deducciones</label>
+            <input type="number" id="total_deducciones" name="total_deducciones" step="0.01">
+
+            <button type="submit" class="btn-submit">Guardar Nómina</button>
+        </form>
+
+        <a href="{{ url_for('liquidacion_nomina.listar_nominas') }}" class="btn-back">← Volver al Listado</a>
+    </div>
+
+</body>
+</html>
